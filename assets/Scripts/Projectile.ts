@@ -31,14 +31,16 @@ export class Projectile extends Component {
         const otherNode = otherCollider.node;
 
         // Check by name
-        if (otherNode.name === "Bunker") {
-            const bunker = otherNode.getComponent(Bunker);
-            bunker.reduceHP();
-        }else if(otherNode.name === "Player"){
-            const player = otherNode.getComponent(Player);
-            player.reduceHP();
+        if(otherNode && otherNde.usValid){
+            if (otherNode.name === "Bunker") {
+                const bunker = otherNode.getComponent(Bunker);
+                bunker.reduceHP();
+            }else if(otherNode.name === "Player"){
+                const player = otherNode.getComponent(Player);
+                player.reduceHP();
+            }
         }
-
+        
         // Jangan langsung destroy, tandai dulu!!!!!
         this.isPendingDestroy = true;
     
