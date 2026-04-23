@@ -1,0 +1,55 @@
+{
+  "__version__": "1.0.6",
+  "general": {
+    "designResolution": {
+      "width": 480,
+      "height": 480
+    }
+  },
+  "layer": [
+    {
+      "name": "Player",
+      "value": 65536
+    },
+    {
+      "name": "Invader",
+      "value": 131072
+    },
+    {
+      "name": "Laser",
+      "value": 262144
+    },
+    {
+      "name": "Missle",
+      "value": 524288
+    }
+  ],
+  "physics": {
+    "collisionGroups": [
+      {
+        "index": 1,
+        "name": "Player"
+      },
+      {
+        "index": 2,
+        "name": "Laser"
+      },
+      {
+        "index": 3,
+        "name": "Invader"
+      },
+      {
+        "index": 4,
+        "name": "Missle"
+      }
+    ],
+    "collisionMatrix": {
+      "0": 63,
+      "1": 63,
+      "2": 63,
+      "3": 63,
+      "4": 63,
+      "5": 63
+    }
+  }
+}
