@@ -19,13 +19,14 @@ export class Invader extends Component {
     // public static invader_dead: boolean = false;
 
     //kyk unity awake
+    public onDestroyed: (() => void) | null = null;
+
     onLoad() {
         this.spriteComponent = this.getComponent(Sprite);
 
         //Collider
         const collider = this.getComponent(Collider2D);
         if (collider) {
-            console.log("invader collider set")
             collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
         }
     }
@@ -39,6 +40,24 @@ export class Invader extends Component {
              //Invader.invader_dead = true;
              this.invader_destroyed = true;
         }
+        const otherNode = otherCollider.node;
+
+        // Check collidernya yg mana
+        if (otherNode.name === "Bunker") {
+            otherNode.destroy();
+        }else if(otherNode.name === "InvaderLimit") {
+            //Todo:trigger method ganti scene di player
+        }else{
+            this.destroyInvader();
+        }
+    }
+
+    private destroyInvader(){
+        if (this.onDestroyed) {
+            this.onDestroyed();
+        }
+
+        this.node.destroy();
     }
 
     //kyk invokeRepeating
@@ -67,45 +86,4 @@ export class Invader extends Component {
         this.spriteComponent.spriteFrame = this.animationSprites[this.animationFrame];
     }
 }
-
-/*
-
-import { _decorator, Component, Sprite, SpriteFrame, Collider2D, Contact2DType, IPhysics2DContact } from 'cc';
-const { ccclass, property } = _decorator;
-
-@ccclass('Invader')
-export class Invader extends Component {
-    @property({ type: [SpriteFrame] })
-    animationSprites: SpriteFrame[] = [];
-
-    @property
-    animationTime: number = 1.0;
-    private spriteComponent: Sprite = null;
-    private animationFrame: number = 0;
-
-    //kyk unity awake
-    onLoad() {
-        this.spriteComponent = this.getComponent(Sprite);
-    }
-
-    //kyk invokeRepeating
-    start() {
-        this.schedule(this.animateSprite, this.animationTime);
-    }
-
-    private animateSprite() {
-        this.animationFrame++;
-
-        //ngulang dr sprite awal
-        if (this.animationFrame >= this.animationSprites.length) {
-            this.animationFrame = 0;
-        }
-
-        this.spriteComponent.spriteFrame = this.animationSprites[this.animationFrame];
-    }
-
-}
-
-
-*/
 

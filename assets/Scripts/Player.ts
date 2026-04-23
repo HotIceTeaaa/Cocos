@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Vec3, input, Input, EventKeyboard, KeyCode, EventMouse, instantiate, Prefab} from 'cc';
+import { _decorator, Component, PhysicsSystem2D, ERaycast2DType, Vec2, input, Input, EventKeyboard, KeyCode, EventMouse, instantiate, Prefab, Collider2D, Contact2DType, IPhysics2DContact } from 'cc';
 const { ccclass, property } = _decorator;
 import { Projectile } from './Projectile';
 
@@ -8,6 +8,12 @@ export class Player extends Component {
     @property
     speed: number = 5.0;
 
+    @property
+    hp: number = 3;
+
+    @property
+    autopilotDirection: number = 1;     // 1 gerak ke kanan, -1 gerak ke kiri
+
     @property({ type: Prefab}) 
     laserPrefab: Prefab = null;
 
@@ -16,6 +22,9 @@ export class Player extends Component {
 
     private isLeftPressed: boolean = false;
     private isRightPressed: boolean = false;
+
+    @property
+    private isCheatActivated: boolean = false;
 
     onLoad() {
         // Register input events
@@ -34,10 +43,27 @@ export class Player extends Component {
     private onKeyDown(event: EventKeyboard) {
         switch (event.keyCode) {
             case KeyCode.KEY_A:
-                this.isLeftPressed = true;
-                break;
+                if(!this.isCheatActivated){
+                    this.isLeftPressed = true;
+                    this.isRightPressed = false;
+                    break;
+                }
             case KeyCode.KEY_D:
-                this.isRightPressed = true;
+                if(!this.isCheatActivated){
+                    this.isRightPressed = true;
+                    this.isLeftPressed = false;
+                    break;
+                }
+            case KeyCode.KEY_P:
+                this.isRightPressed = false;
+                this.isLeftPressed = false;
+
+                if(this.isCheatActivated){
+                    this.isCheatActivated = false;
+                }else{
+                    this.isCheatActivated = true;
+                }
+                
                 break;
         }
     }
@@ -66,7 +92,7 @@ export class Player extends Component {
                     
             // Set position: spawn on the player
             const playerPos = this.node.position;
-            laserNode.setPosition(playerPos.x, playerPos.y + 20, playerPos.z);  // Adjust offset as needed
+            laserNode.setPosition(playerPos.x, playerPos.y, playerPos.z);  // Adjust offset as needed
 
             // Add to the current scene (or a specific container node)
             this.node.parent.addChild(laserNode);
@@ -76,7 +102,7 @@ export class Player extends Component {
             if (projectile) {
                 // Assign the callback
                 projectile.onDestroyed = this.laserDestroyed.bind(this);
-                projectile.direction = new Vec3(0, 1, 0); // Shoot upward
+                projectile.setdirectionUp() // Shoot upward
             }
 
             this.isLaserActive = true;
@@ -105,5 +131,61 @@ export class Player extends Component {
                 this.node.position.z
             );
         }
+
+        this.handleAutopilot(deltaTime);
     }
+
+    handleAutopilot(deltaTime: number){
+        if(this.isCheatActivated){
+            if(this.autopilotDirection === 1 && this.node.position.x >= 240){    //kena border kanan dan bergerak ke kanan
+                this.autopilotDirection *= -1;
+            }else if(this.autopilotDirection === -1 && this.node.position.x <= -240)  //kena border kiri dan bergerak ke kiri
+                this.autopilotDirection *= -1;
+
+            const moveDelta = this.autopilotDirection * this.speed * deltaTime;
+            this.node.setPosition(
+                this.node.position.x + moveDelta,
+                this.node.position.y,
+                this.node.position.z
+            );
+
+            if(this.detectEnemy(this.node.position.x) && !this.detectBunker(this.node.position.x)){
+                this.shoot();
+            }
+        }
+    }
+
+    reduceHP(){
+        this.hp -= 1;
+
+        if(this.hp <= 0){
+            this.node.destroy();
+            //Todo: tambahin scene manager untuk pindah ke scene hasil score
+        }
+    }
+
+    detectEnemy(xPos: number){
+        // Performs a raycast 
+        const results = PhysicsSystem2D.instance.raycast(
+            new Vec2(xPos, -150),                       // start point
+            new Vec2(xPos, 240),                      // end point
+            ERaycast2DType.Any,               // type: Closest, Any, All
+            0xFFFFFFFF                             // mask 
+        );
+
+        return results.length > 0
+    }
+
+    detectBunker(xPos: number){
+        // Performs a raycast 
+        const results = PhysicsSystem2D.instance.raycast(
+            new Vec2(xPos, -165),                       // start point
+            new Vec2(xPos, -140),                      // end point
+            ERaycast2DType.Closest,               // type: Closest, Any, All
+            1 << 0                            // mask 
+        );
+
+        return results.length > 0
+    }
+    
 }

@@ -1,5 +1,7 @@
-import { _decorator, Component, Prefab, instantiate, Vec3 } from 'cc';
 import { DifficultyManager } from './DifficultyManager';
+import { _decorator, Component, Prefab, instantiate, Vec3, math } from 'cc';
+import { Invader } from './Invader';
+import { Projectile } from './Projectile';
 
 const { ccclass, property } = _decorator;
 
@@ -8,6 +10,9 @@ export class InvaderGrid extends Component {
 
     @property({ type: [Prefab] })
     prefabs: Prefab[] = [];
+
+    @property({ type: Prefab}) 
+    misslePrefab: Prefab = null;
 
     @property
     rows: number = 5;
@@ -18,13 +23,24 @@ export class InvaderGrid extends Component {
     @property
     speed: number = 20.0;
 
+    @property
+    invaderKilled: number = 0;
+
+    @property
+    firerate: number = 2;       //dalam detik
+
     private direction: Vec3 = new Vec3(1,0,0);
+    private totalInvaders: number = this.rows * this.columns;
 
     onLoad() {
         // this.generateGrid();
     }
 
-    public generateGrid() { //from private
+    start(){
+        this.schedule(this.doMissleAttack, this.firerate);
+    }
+
+    public generateGrid() { //Prev Private
         for (let row = 0; row < this.rows; row++) {
             // Calculate centering offsets
             const width = 30.0 * (this.columns - 1);
@@ -45,6 +61,11 @@ export class InvaderGrid extends Component {
                 // Calculate local position
                 const posX = centeringX + (col * 30.0);
                 invaderNode.setPosition(new Vec3(posX, rowY, 0));
+
+                // set callback
+                const invader = invaderNode.getComponent(Invader);
+                invader.onDestroyed = this.incrementKillCount.bind(this);
+                invader.onDestroyed = this.increaseSpeed.bind(this);
             }
         }
     }
@@ -86,5 +107,38 @@ export class InvaderGrid extends Component {
         const pos = this.node.position.clone();
         pos.y -= 10.0;
         this.node.position = pos;
+    }
+
+    private incrementKillCount() {
+        this.invaderKilled += 1;
+    }
+
+    private increaseSpeed() {
+        this.speed += 1;
+    }
+
+    private doMissleAttack(){
+        for (const child of this.node.children) {
+            if (!child.activeInHierarchy) continue;
+            
+            const treshold = math.randomRange(0, this.totalInvaders) - 1;
+            if(this.invaderKilled >= treshold){
+                // Instantiate the laser
+                const missleNode = instantiate(this.misslePrefab);
+                                    
+                // Set position: spawn on the invader
+                const invaderPos = child.position;
+                missleNode.setPosition(invaderPos.x, invaderPos.y, invaderPos.z);  // Adjust offset as needed
+                
+                // Add to the current scene (or a specific container node)
+                this.node.parent.addChild(missleNode);
+                
+                // Get the Projectile component
+                const projectile = missleNode.getComponent(Projectile);
+                if (projectile) {
+                    projectile.setdirectionDown() // Shoot downward
+                }
+            }
+        }
     }
 }
