@@ -1,4 +1,5 @@
 import { _decorator, Component, Prefab, instantiate, Vec3 } from 'cc';
+import { DifficultyManager } from './DifficultyManager';
 
 const { ccclass, property } = _decorator;
 
@@ -20,10 +21,10 @@ export class InvaderGrid extends Component {
     private direction: Vec3 = new Vec3(1,0,0);
 
     onLoad() {
-        this.generateGrid();
+        // this.generateGrid();
     }
 
-    private generateGrid() {
+    public generateGrid() { //from private
         for (let row = 0; row < this.rows; row++) {
             // Calculate centering offsets
             const width = 30.0 * (this.columns - 1);
@@ -49,8 +50,12 @@ export class InvaderGrid extends Component {
     }
 
     update(deltaTime: number) {
+        //Ambil Speed dari Diff Manager
+        const currentSpeed = DifficultyManager.enemySpeed;
+
+
         // Move the entire grid
-        const movement = this.direction.clone().multiplyScalar(this.speed * deltaTime);
+        const movement = this.direction.clone().multiplyScalar(currentSpeed * deltaTime);
         this.node.position = this.node.position.add(movement);
 
         // Get screen edges in world coordinates

@@ -1,4 +1,6 @@
 import { _decorator, Component, Sprite, SpriteFrame, Collider2D, Contact2DType, IPhysics2DContact } from 'cc';
+//DifficutyManager
+import { DifficultyManager } from './DifficultyManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('Invader')
@@ -10,6 +12,11 @@ export class Invader extends Component {
     animationTime: number = 1.0;
     private spriteComponent: Sprite = null;
     private animationFrame: number = 0;
+
+    //ERIK temp
+    private currentHP: number = 1;
+     private invader_destroyed: boolean = false;
+    // public static invader_dead: boolean = false;
 
     //kyk unity awake
     onLoad() {
@@ -23,14 +30,31 @@ export class Invader extends Component {
         }
     }
 
+    //EDIT: kurangin HP
     private onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
-        this.node.destroy();
+        this.currentHP -= 1;
+
+        if (this.currentHP <= 0) {
+            //this.node.destroy();
+             //Invader.invader_dead = true;
+             this.invader_destroyed = true;
+        }
     }
 
     //kyk invokeRepeating
     start() {
+        //ADD HP BEDASARKAN DIFFICULTY
+        this.currentHP = DifficultyManager.InvaderHP;
         this.schedule(this.animateSprite, this.animationTime);
     }
+
+     update(deltaTime: number) {
+         // PENTING: Hapus node di sini agar tidak kena error 'enabledContactListener of null'
+         if (this.invader_destroyed) {
+             this.node.destroy();
+         }
+         return;
+     }
 
     private animateSprite() {
         this.animationFrame++;

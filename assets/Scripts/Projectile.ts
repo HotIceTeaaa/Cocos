@@ -11,6 +11,9 @@ export class Projectile extends Component {
     speed: number = 10.0;
 
     public onDestroyed: (() => void) | null = null;
+    
+    // Tambahkan flag untuk menandai penghancuran
+    private isPendingDestroy: boolean = false;
 
     onLoad() {
         const collider = this.getComponent(Collider2D);
@@ -20,19 +23,20 @@ export class Projectile extends Component {
     }
 
     private onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
-        this.destroyProjectile();
-    }
-
-    private destroyProjectile() {
-
-        if (this.onDestroyed) {
-            this.onDestroyed();
-        }
-
-        this.node.destroy();
+        // Jangan langsung destroy, tandai dulu!!!!!
+        this.isPendingDestroy = true;
     }
 
     update(deltaTime: number) {
+        // Cek apakah harus dihancurkan di sini (di luar proses physics)
+        if (this.isPendingDestroy) {
+            if (this.onDestroyed) {
+                this.onDestroyed();
+            }
+            this.node.destroy();
+            return; 
+        }
+
         const movement = this.direction.clone().multiplyScalar(this.speed * deltaTime);
         let newY = this.node.position.y + movement.y;
 
