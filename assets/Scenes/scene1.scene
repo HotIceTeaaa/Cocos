@@ -1085,6 +1085,10 @@
     "__prefab": null,
     "hp": 3,
     "modeSeruduk": false,
+    "playerNode": {
+      "__id__": 5
+    },
+    "followSpeed": 3,
     "_id": "bfOtfeBNVIY5deeiovXeOH"
   },
   {
@@ -1647,6 +1651,8 @@
     "__prefab": null,
     "hp": 3,
     "modeSeruduk": false,
+    "playerNode": null,
+    "followSpeed": 2,
     "_id": "cazWDQL1xK2II0wNXRRDET"
   },
   {
