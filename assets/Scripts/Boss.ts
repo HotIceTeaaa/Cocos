@@ -28,6 +28,7 @@ export class Boss extends Component {
     private isDashing: boolean = false;
 
     private isGameStarted: boolean = false;
+    private boss_is_dead : boolean = false;
 
     onLoad() {
         this.spriteComponent = this.getComponent(Sprite);
@@ -90,7 +91,7 @@ export class Boss extends Component {
         this.hp -= 1;
 
         if (this.hp <= 0) {
-            this.node.destroy();
+            this.boss_is_dead = true;
         }
     }
 
@@ -100,6 +101,10 @@ export class Boss extends Component {
             let currentX = this.node.position.x;
             let newX = math.lerp(currentX, targetX, deltaTime * this.followSpeed);
             this.node.setPosition(newX, this.node.position.y, this.node.position.z);
+        }
+
+        if(this.boss_is_dead){
+            this.node.destroy();
         }
     }
 }

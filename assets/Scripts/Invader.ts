@@ -47,6 +47,8 @@ export class Invader extends Component {
             otherNode.destroy();
         }else if(otherNode.name === "InvaderLimit") {
             //Todo:trigger method ganti scene di player
+        //}elseif(otherNode.name === "Missile"){
+          //  return;
         }else{
             this.destroyInvader();
         }
