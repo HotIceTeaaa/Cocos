@@ -60,7 +60,7 @@ export class InvaderGrid extends Component {
 
         // Get screen edges in world coordinates
         const leftEdge = 20;
-        const rightEdge = 460;
+        const rightEdge = 390;
 
         // Check each invader child
         for (const child of this.node.children) {

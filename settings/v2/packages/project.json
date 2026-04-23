@@ -2,7 +2,7 @@
   "__version__": "1.0.6",
   "general": {
     "designResolution": {
-      "width": 480,
+      "width": 700,
       "height": 480,
       "fitHeight": false
     }
@@ -42,15 +42,19 @@
       {
         "index": 4,
         "name": "Missle"
+      },
+      {
+        "index": 5,
+        "name": "Bunker"
       }
     ],
     "collisionMatrix": {
       "0": 63,
-      "1": 63,
-      "2": 63,
-      "3": 63,
-      "4": 63,
-      "5": 63
+      "1": 59,
+      "2": 61,
+      "3": 7,
+      "4": 55,
+      "5": 55
     }
   },
   "custom_joint_texture_layouts": []

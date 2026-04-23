@@ -44,7 +44,7 @@ export class Invader extends Component {
     //kyk invokeRepeating
     start() {
         //ADD HP BEDASARKAN DIFFICULTY
-        this.currentHP = DifficultyManager.InvaderHP;
+        this.currentHP = DifficultyManager.invaderHP;
         this.schedule(this.animateSprite, this.animationTime);
     }
 
