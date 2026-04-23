@@ -1,11 +1,13 @@
 import { _decorator, Component, Vec3, Collider2D, Contact2DType, IPhysics2DContact } from 'cc';
 const { ccclass, property } = _decorator;
+import { Player } from './Player';
+import { Bunker } from './Bunker';
 
 @ccclass('Projectile')
 export class Projectile extends Component {
 
     @property
-    direction: Vec3 = new Vec3(0, 1, 0);
+    direction: Vec3;
 
     @property
     speed: number = 10.0;
@@ -21,6 +23,18 @@ export class Projectile extends Component {
 
     private onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         this.destroyProjectile();
+
+        //nurunin HP player atau bunker tergantung otherCollidernya punya node mana
+        const otherNode = otherCollider.node;
+
+        // Check by name
+        if (otherNode.name === "Bunker") {
+            const bunker = otherNode.getComponent(Bunker);
+            bunker.reduceHP();
+        }else if(otherNode.name === "Player"){
+            const player = otherNode.getComponent(Player);
+            player.reduceHP();
+        }
     }
 
     private destroyProjectile() {
@@ -41,5 +55,13 @@ export class Projectile extends Component {
             newY,
             this.node.position.z + movement.z
         );
+    }
+
+    setdirectionUp(){
+        this.direction = new Vec3(0, 1, 0);
+    }
+
+    setdirectionDown(){
+        this.direction = new Vec3(0, -1, 0);
     }
 }

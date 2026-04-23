@@ -8,6 +8,9 @@ export class Player extends Component {
     @property
     speed: number = 5.0;
 
+    @property
+    hp: number = 3;
+
     @property({ type: Prefab}) 
     laserPrefab: Prefab = null;
 
@@ -66,7 +69,7 @@ export class Player extends Component {
                     
             // Set position: spawn on the player
             const playerPos = this.node.position;
-            laserNode.setPosition(playerPos.x, playerPos.y + 20, playerPos.z);  // Adjust offset as needed
+            laserNode.setPosition(playerPos.x, playerPos.y, playerPos.z);  // Adjust offset as needed
 
             // Add to the current scene (or a specific container node)
             this.node.parent.addChild(laserNode);
@@ -76,7 +79,7 @@ export class Player extends Component {
             if (projectile) {
                 // Assign the callback
                 projectile.onDestroyed = this.laserDestroyed.bind(this);
-                projectile.direction = new Vec3(0, 1, 0); // Shoot upward
+                projectile.setdirectionUp() // Shoot upward
             }
 
             this.isLaserActive = true;
@@ -104,6 +107,15 @@ export class Player extends Component {
                 this.node.position.y,
                 this.node.position.z
             );
+        }
+    }
+
+    reduceHP(){
+        this.hp -= 1;
+
+        if(this.hp <= 0){
+            this.node.destroy();
+            //Todo: tambahin scene manager untuk pindah ke scene hasil score
         }
     }
 }

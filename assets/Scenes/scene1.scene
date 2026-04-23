@@ -259,7 +259,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -210,
+      "y": -205,
       "z": 0
     },
     "_lrot": {
@@ -1151,8 +1151,8 @@
     "bullet": false,
     "awakeOnLoad": true,
     "_group": 8,
-    "_type": 0,
-    "_allowSleep": true,
+    "_type": 1,
+    "_allowSleep": false,
     "_gravityScale": 1,
     "_linearDamping": 0,
     "_angularDamping": 0,
@@ -1261,8 +1261,8 @@
     "bullet": false,
     "awakeOnLoad": true,
     "_group": 8,
-    "_type": 0,
-    "_allowSleep": true,
+    "_type": 1,
+    "_allowSleep": false,
     "_gravityScale": 1,
     "_linearDamping": 0,
     "_angularDamping": 0,
