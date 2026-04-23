@@ -3,7 +3,8 @@
   "general": {
     "designResolution": {
       "width": 480,
-      "height": 480
+      "height": 480,
+      "fitHeight": false
     }
   },
   "layer": [
@@ -51,5 +52,6 @@
       "4": 63,
       "5": 63
     }
-  }
+  },
+  "custom_joint_texture_layouts": []
 }
