@@ -24,6 +24,8 @@ export class Invader extends Component {
     }
 
     private onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
+        if (otherCollider.node.name === "Invader") return;
+        
         this.node.destroy();
     }
 
