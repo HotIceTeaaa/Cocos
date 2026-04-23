@@ -92,10 +92,21 @@ export class Boss extends Component {
 
         if (this.hp <= 0) {
             this.boss_is_dead = true;
+
+            //Matikan Collider
+            selfCollider.enabled = false;
+            //Matikan Seruduk
+            this.unscheduleAllCallbacks();
         }
     }
 
     update(deltaTime: number) {
+
+        if (!this.isValid || !this.node || this.boss_is_dead) {
+            return;
+        }
+
+
         if (this.isGameStarted && this.playerNode && !this.isDashing) {
             let targetX = this.playerNode.position.x;
             let currentX = this.node.position.x;
