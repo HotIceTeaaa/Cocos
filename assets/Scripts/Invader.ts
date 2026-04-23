@@ -18,6 +18,8 @@ export class Invader extends Component {
      private invader_destroyed: boolean = false;
     // public static invader_dead: boolean = false;
 
+    private invader_bullet_destroyed: boolean = false;
+
     //kyk unity awake
     public onDestroyed: (() => void) | null = null;
 
@@ -44,7 +46,11 @@ export class Invader extends Component {
 
         // Check collidernya yg mana
         if (otherNode.name === "Bunker") {
-            otherNode.destroy();
+
+            invader_bullet_destroyed = true;
+
+            //otherNode.destroy();
+
         }else if(otherNode.name === "InvaderLimit") {
             //Todo:trigger method ganti scene di player
         //}elseif(otherNode.name === "Missile"){

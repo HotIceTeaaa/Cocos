@@ -8,7 +8,7 @@ export class Bunker extends Component {
     hp: number = 3;
 
     reduceHP(){
-        if (!this.isValid) return;
+        if (!this.isValid || !this.node) return;
         
         this.hp -= 1;
 

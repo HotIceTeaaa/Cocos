@@ -27,9 +27,6 @@ export class Projectile extends Component {
     private onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         if (this.isPendingDestroy) return;
 
-        const otherNode = otherCollider.node;
-
-        
         //nurunin HP player atau bunker tergantung otherCollidernya punya node mana
         const otherNode = otherCollider.node;
 
