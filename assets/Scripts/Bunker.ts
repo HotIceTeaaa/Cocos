@@ -8,12 +8,11 @@ export class Bunker extends Component {
     hp: number = 3;
 
     reduceHP(){
-        if (!this.isValid) return;
-        
         this.hp -= 1;
-
         if(this.hp <= 0){
-            this.node.destroy();
+            setTimeout(() => {
+                if (this.node && this.node.isValid) this.node.destroy();
+            }, 0);
         }
     }
 }

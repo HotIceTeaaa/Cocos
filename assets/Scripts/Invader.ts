@@ -1,6 +1,7 @@
 import { _decorator, Component, Sprite, SpriteFrame, Collider2D, Contact2DType, IPhysics2DContact } from 'cc';
 //DifficutyManager
 import { DifficultyManager } from './DifficultyManager';
+import { Bunker } from './Bunker';
 const { ccclass, property } = _decorator;
 
 @ccclass('Invader')
@@ -36,19 +37,16 @@ export class Invader extends Component {
         this.currentHP -= 1;
 
         if (this.currentHP <= 0) {
-            //this.node.destroy();
-             //Invader.invader_dead = true;
              this.invader_destroyed = true;
         }
         const otherNode = otherCollider.node;
 
         // Check collidernya yg mana
         if (otherNode.name === "Bunker") {
-            otherNode.destroy();
+            const bunker = otherNode.getComponent(Bunker); // Ambil komponennya
+            if (bunker) bunker.reduceHP();
         }else if(otherNode.name === "InvaderLimit") {
             //Todo:trigger method ganti scene di player
-        //}elseif(otherNode.name === "Missile"){
-          //  return;
         }else{
             this.destroyInvader();
         }
@@ -59,7 +57,10 @@ export class Invader extends Component {
             this.onDestroyed();
         }
 
-        this.node.destroy();
+        // PERBAIKAN: Gunakan setTimeout
+        setTimeout(() => {
+            if (this.node && this.node.isValid) this.node.destroy();
+        }, 0);
     }
 
     //kyk invokeRepeating

@@ -49,13 +49,13 @@ export class Boss extends Component {
 
     public activateBoss(hpDiterima: number) {
         console.log("Boss Aktif dengan HP:", hpDiterima);
-    this.hp = hpDiterima; // Terima HP dari luar
-    this.isGameStarted = true;
-    
-    if(this.nyeruduk) {
-        this.schedule(this.startDash, this.dashInterval);
+        this.hp = hpDiterima; // Terima HP dari luar
+        this.isGameStarted = true;
+        
+        if(this.nyeruduk) {
+            this.schedule(this.startDash, this.dashInterval);
+        }
     }
-}
 
     private startDash() {
         if (this.isDashing || !this.isValid) return;
@@ -91,12 +91,9 @@ export class Boss extends Component {
         this.hp -= 1;
 
         if (this.hp <= 0) {
-            this.boss_is_dead = true;
-
-            //Matikan Collider
-            selfCollider.enabled = false;
-            //Matikan Seruduk
-            this.unscheduleAllCallbacks();
+            setTimeout(() => {
+                if (this.node && this.node.isValid) this.node.destroy();
+            }, 0);
         }
     }
 

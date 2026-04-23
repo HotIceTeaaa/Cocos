@@ -157,10 +157,11 @@ export class Player extends Component {
 
     reduceHP(){
         this.hp -= 1;
-
         if(this.hp <= 0){
-            this.node.destroy();
-            //Todo: tambahin scene manager untuk pindah ke scene hasil score
+            setTimeout(() => {
+                if (this.node && this.node.isValid) this.node.destroy();
+                //Todo: tambahin scene manager untuk pindah ke scene hasil score
+            }, 0);
         }
     }
 

@@ -29,17 +29,13 @@ export class Projectile extends Component {
 
         const otherNode = otherCollider.node;
 
-        
-        //nurunin HP player atau bunker tergantung otherCollidernya punya node mana
-        const otherNode = otherCollider.node;
-
         // Check by name
         if (otherNode.name === "Bunker") {
             const bunker = otherNode.getComponent(Bunker);
-            bunker.reduceHP();
+            if (bunker) bunker.reduceHP();
         }else if(otherNode.name === "Player"){
             const player = otherNode.getComponent(Player);
-            player.reduceHP();
+            if (player) player.reduceHP();
         }
 
         // Jangan langsung destroy, tandai dulu!!!!!
@@ -63,7 +59,7 @@ export class Projectile extends Component {
         // Cek apakah harus dihancurkan di sini (di luar proses physics)
         if (this.isPendingDestroy || !this.isValid || !this.node) {
             if (this.node && this.isPendingDestroy) {
-                this.node.destroy();
+                this.destroyProjectile();
             }
             return;
         }
