@@ -24,7 +24,16 @@ export class Invader extends Component {
     }
 
     private onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
-        this.destroyInvader();
+        const otherNode = otherCollider.node;
+
+        // Check collidernya yg mana
+        if (otherNode.name === "Bunker") {
+            otherNode.destroy();
+        }else if(otherNode.name === "InvaderLimit") {
+            //Todo:trigger method ganti scene di player
+        }else{
+            this.destroyInvader();
+        }
     }
 
     private destroyInvader(){
