@@ -1,4 +1,5 @@
 import { _decorator, Component, Collider2D, Contact2DType, IPhysics2DContact, Sprite, Node, math, tween, Vec3 } from 'cc';
+import { DifficultyManager } from './DifficultyManager';
 //import { DifficultyManager } from './DifficultyManager';
 const { ccclass, property } = _decorator;
 
@@ -91,6 +92,7 @@ export class Boss extends Component {
         this.hp -= 1;
 
         if (this.hp <= 0) {
+            DifficultyManager.addScore(1000);
             setTimeout(() => {
                 if (this.node && this.node.isValid) this.node.destroy();
             }, 0);

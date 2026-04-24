@@ -57,6 +57,11 @@ export class Invader extends Component {
             this.onDestroyed();
         }
 
+        //DEBUG
+        console.log("Menambah skor...");
+        //TAMBAH SCOREE
+        DifficultyManager.addScore(10);
+
         // PERBAIKAN: Gunakan setTimeout
         setTimeout(() => {
             if (this.node && this.node.isValid) this.node.destroy();
@@ -70,13 +75,13 @@ export class Invader extends Component {
         this.schedule(this.animateSprite, this.animationTime);
     }
 
-     update(deltaTime: number) {
-         // PENTING: Hapus node di sini agar tidak kena error 'enabledContactListener of null'
-         if (this.invader_destroyed) {
-             this.node.destroy();
-         }
-         return;
-     }
+    //  update(deltaTime: number) {
+    //      // PENTING: Hapus node di sini agar tidak kena error 'enabledContactListener of null'
+    //      if (this.invader_destroyed) {
+    //          this.node.destroy();
+    //      }
+    //      return;
+    //  }
 
     private animateSprite() {
         this.animationFrame++;
