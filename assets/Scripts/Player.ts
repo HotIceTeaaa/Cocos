@@ -1,4 +1,4 @@
-import { _decorator, Component, PhysicsSystem2D, ERaycast2DType, Vec2, input, Input, EventKeyboard, KeyCode, EventMouse, instantiate, Prefab, Collider2D, Contact2DType, IPhysics2DContact } from 'cc';
+import { _decorator, Component, PhysicsSystem2D, ERaycast2DType, Vec2, input, Input, EventKeyboard, KeyCode, EventMouse, instantiate, Prefab, Collider2D, Contact2DType, IPhysics2DContact, director } from 'cc';
 const { ccclass, property } = _decorator;
 import { Projectile } from './Projectile';
 import { DifficultyManager } from './DifficultyManager';
@@ -115,6 +115,8 @@ export class Player extends Component {
     }
 
     update(deltaTime: number) {
+        if (!this.node || !this.node.isValid) return;
+        
         let movement = 0;
 
         if (this.isLeftPressed) {
@@ -137,6 +139,8 @@ export class Player extends Component {
     }
 
     handleAutopilot(deltaTime: number){
+        if (!this.node || !this.node.isValid) return;
+
         if(this.isCheatActivated){
             if(this.autopilotDirection === 1 && this.node.position.x >= 240){    //kena border kanan dan bergerak ke kanan
                 this.autopilotDirection *= -1;
@@ -162,6 +166,12 @@ export class Player extends Component {
         DifficultyManager.currentLife = this.hp;
         
         if(this.hp <= 0){
+
+            const manager = director.getScene().getComponentInChildren(DifficultyManager);
+            if (manager) {
+                manager.gameOver();
+            }
+
             setTimeout(() => {
                 if (this.node && this.node.isValid) this.node.destroy();
                 //Todo: tambahin scene manager untuk pindah ke scene hasil score

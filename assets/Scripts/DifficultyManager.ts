@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Button, Label } from 'cc';
+import { _decorator, Component, Node, Button, Label, director } from 'cc';
 import { InvaderGrid } from './InvaderGrid';
 import { Boss } from './Boss';
 const { ccclass, property } = _decorator;
@@ -13,7 +13,9 @@ export class DifficultyManager extends Component {
     @property(Node)
     private btnHard: Node = null;
     @property(Node)
-    private menuPanel: Node = null; 
+    private menuPanel: Node = null;
+    @property(Node)
+    private gameOverPanel: Node = null; 
 
 
     //INfo LAbel
@@ -34,6 +36,7 @@ export class DifficultyManager extends Component {
     public static enemySpeed: number = 20;
     public static bossHP : number = 5;
     public static currentLife: number = 5;
+    public static isGameOver: boolean = false;
     
 
     ///SCORE INFORMASI
@@ -93,6 +96,17 @@ export class DifficultyManager extends Component {
         if (this.lifeLabel) {
             this.lifeLabel.string = "" + DifficultyManager.currentLife;
         }
+    }
+
+    public gameOver() {
+        DifficultyManager.isGameOver = true;
+        
+        if (this.gameOverPanel) {
+            this.gameOverPanel.active = true;
+        }
+
+        console.log("Game Over!");
+        director.pause(); 
     }
 
     start() {
