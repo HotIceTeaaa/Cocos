@@ -106,7 +106,9 @@ export class DifficultyManager extends Component {
         }
 
         console.log("Game Over!");
-        director.pause(); 
+        setTimeout(() => {
+            director.pause(); 
+        }, 10)
     }
 
     start() {

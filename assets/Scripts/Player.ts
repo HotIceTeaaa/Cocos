@@ -116,7 +116,7 @@ export class Player extends Component {
 
     update(deltaTime: number) {
         if (!this.node || !this.node.isValid) return;
-        
+
         let movement = 0;
 
         if (this.isLeftPressed) {
@@ -167,7 +167,7 @@ export class Player extends Component {
         
         if(this.hp <= 0){
 
-            const manager = director.getScene().getComponentInChildren(DifficultyManager);
+            let manager = director.getScene().getComponentInChildren(DifficultyManager)
             if (manager) {
                 manager.gameOver();
             }
