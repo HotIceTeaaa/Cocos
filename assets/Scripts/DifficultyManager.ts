@@ -102,13 +102,14 @@ export class DifficultyManager extends Component {
         DifficultyManager.isGameOver = true;
         
         if (this.gameOverPanel) {
+            console.log("Panel Game Over Aktif");
             this.gameOverPanel.active = true;
         }
 
         console.log("Game Over!");
         setTimeout(() => {
             director.pause(); 
-        }, 10)
+        }, 200)
     }
 
     start() {
@@ -118,7 +119,7 @@ export class DifficultyManager extends Component {
     }
 
     update(deltaTime: number) {
-        console.log("Score: " + DifficultyManager.currentScore);
+        //console.log("Score: " + DifficultyManager.currentScore);
         this.updateInfo();
     }
 }
