@@ -1,6 +1,7 @@
 import { _decorator, Component, PhysicsSystem2D, ERaycast2DType, Vec2, input, Input, EventKeyboard, KeyCode, EventMouse, instantiate, Prefab, Collider2D, Contact2DType, IPhysics2DContact } from 'cc';
 const { ccclass, property } = _decorator;
 import { Projectile } from './Projectile';
+import { DifficultyManager } from './DifficultyManager';
 
 @ccclass('Player')
 export class Player extends Component {
@@ -9,7 +10,7 @@ export class Player extends Component {
     speed: number = 5.0;
 
     @property
-    hp: number = 3;
+    hp: number = 5;
 
     @property
     autopilotDirection: number = 1;     // 1 gerak ke kanan, -1 gerak ke kiri
@@ -157,6 +158,9 @@ export class Player extends Component {
 
     reduceHP(){
         this.hp -= 1;
+
+        DifficultyManager.currentLife = this.hp;
+        
         if(this.hp <= 0){
             setTimeout(() => {
                 if (this.node && this.node.isValid) this.node.destroy();

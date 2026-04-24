@@ -21,6 +21,8 @@ export class DifficultyManager extends Component {
     private scoreLabel: Label = null; 
     @property(Label)
     private difficultyLabel: Label = null;
+    @property(Label)
+    private lifeLabel: Label = null;
 
     @property(InvaderGrid)
     private invaderGrid: InvaderGrid = null;
@@ -31,6 +33,8 @@ export class DifficultyManager extends Component {
     public static invaderHP: number = 1;
     public static enemySpeed: number = 20;
     public static bossHP : number = 5;
+    public static currentLife: number = 5;
+    
 
     ///SCORE INFORMASI
     public static currentScore: number = 0;
@@ -66,9 +70,10 @@ export class DifficultyManager extends Component {
             this.difficultyLabel.string = diffName;
         } 
         
-        // Reset Score jika nanti ada sistem restart
+        // Reset jika nanti ada sistem restart
         DifficultyManager.currentScore = 0;
-        this.updateScoreInfo();
+        DifficultyManager.currentLife = 5;
+        this.updateInfo();
 
         // Sembunyikan menu setelah pilih
         this.menuPanel.active = false;
@@ -81,9 +86,12 @@ export class DifficultyManager extends Component {
         DifficultyManager.currentScore += points;
     }
 
-    updateScoreInfo() {
+    updateInfo() {
         if (this.scoreLabel) {
             this.scoreLabel.string = "" + DifficultyManager.currentScore;
+        }
+        if (this.lifeLabel) {
+            this.lifeLabel.string = "" + DifficultyManager.currentLife;
         }
     }
 
@@ -95,6 +103,6 @@ export class DifficultyManager extends Component {
 
     update(deltaTime: number) {
         console.log("Score: " + DifficultyManager.currentScore);
-        this.updateScoreInfo();
+        this.updateInfo();
     }
 }

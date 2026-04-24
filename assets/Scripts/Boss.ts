@@ -1,5 +1,6 @@
 import { _decorator, Component, Collider2D, Contact2DType, IPhysics2DContact, Sprite, Node, math, tween, Vec3 } from 'cc';
 import { DifficultyManager } from './DifficultyManager';
+import { Player } from './Player';
 //import { DifficultyManager } from './DifficultyManager';
 const { ccclass, property } = _decorator;
 
@@ -22,7 +23,7 @@ export class Boss extends Component {
     dashInterval: number = 4.0;
 
     @property
-    bottomY: number = -300;
+    bottomY: number = -280;
 
     private spriteComponent: Sprite = null;
     private originalY: number = 0;
@@ -68,7 +69,7 @@ export class Boss extends Component {
         let currentX = this.node.position.x;
 
         tween(this.node)
-            .to(0.5, { position: new Vec3(currentX, this.bottomY, 0) }, { easing: 'cubicIn' })
+            .to(1.0, { position: new Vec3(currentX, this.bottomY, 0) }, { easing: 'quadIn' })
             .delay(0.2)
             .to(1.0, { position: new Vec3(currentX, this.originalY, 0) }, { easing: 'quadOut' })
             
@@ -83,7 +84,12 @@ export class Boss extends Component {
     private onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         if (otherCollider.node.name === "Player") {
             // hp player berkurang
-            return; 
+            const playerScript = otherCollider.node.getComponent(Player);
+        
+            if (playerScript) {
+                console.log("Boss nabrak Player");
+                playerScript.reduceHP(); 
+            }
         }
 
         if (otherCollider.node.name === "Invader") return;

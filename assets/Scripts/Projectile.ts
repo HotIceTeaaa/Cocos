@@ -30,7 +30,7 @@ export class Projectile extends Component {
         const otherNode = otherCollider.node;
 
         // Check by name
-        if (otherNode.name === "Bunker") {
+        if (otherNode.name.includes("Bunker")) {
             const bunker = otherNode.getComponent(Bunker);
             if (bunker) bunker.reduceHP();
         }else if(otherNode.name === "Player"){

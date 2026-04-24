@@ -5,7 +5,7 @@ const { ccclass, property } = _decorator;
 export class Bunker extends Component {
 
     @property
-    hp: number = 3;
+    hp: number = 7;
 
     reduceHP(){
         this.hp -= 1;
