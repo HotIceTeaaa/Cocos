@@ -109,7 +109,7 @@ export class DifficultyManager extends Component {
         console.log("Game Over!");
         setTimeout(() => {
             director.pause(); 
-        }, 200)
+        }, 50)
     }
 
     start() {
